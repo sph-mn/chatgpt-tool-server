@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if test ! -f src/config.js
+then
+  cp src/config.js.example src/config.js
+fi
+
+node src/broker.js

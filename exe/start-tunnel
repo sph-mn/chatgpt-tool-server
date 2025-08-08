@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# create a tunnel between the local machine and the public server via a unix socket.
+# usage: ./exe/start-tunnel myhostname
+
+# - fail immediately if remote forwarding cannot be established
+# - remove any existing socket file at the bind path before creating a new one
+# - send keep-alive packets every 30 seconds to maintain idle connections
+
+s="/run/http/broker"
+
+# the forwarding fails if the socket file already exists
+# and StreamLocalBindUnlink is not reliable. so we attempt to delete it this way if it exists.
+ssh "$1" "test -S '$s' && rm -f '$s'"
+
+ssh -v -o ExitOnForwardFailure=yes -o StreamLocalBindUnlink=yes -o ServerAliveInterval=30 \
+  -R "$s":127.0.0.1:12717 "$1" "umask 007 && sleep infinity"

@@ -1,0 +1,64 @@
+const default_root = "/tmp"
+
+const limits = {
+  output_character_limit: 50000,
+  output_drop_line_limit: 300
+}
+
+const roots = [{
+  path: default_root,
+  name: "default",
+  description: "default working directory",
+  keywords: ["default"]
+}]
+
+const tools = {
+  echo_args: {
+    path: "/echo_args",
+    description: "Echo arguments back as output (argv example).",
+    params: {
+      args: {
+        type: "array",
+        items: { type: "string" },
+        example: ["hello", "world"]
+      },
+      root: {
+        type: "string",
+        default: default_root,
+        example: default_root
+      }
+    },
+    command: "echo",
+    mode: "argv"
+  },
+  cat_stdin: {
+    path: "/cat_stdin",
+    description: "Echo stdin back as output (stdin example).",
+    params: {
+      input: {
+        type: "string",
+        example: "Hello from stdin"
+      },
+      root: {
+        type: "string",
+        default: default_root,
+        example: default_root
+      }
+    },
+    root: "/",
+    command: "cat",
+    mode: "stdin"
+  },
+  roots: {
+    path: "/roots",
+    description: "List predefined root directories for tool operations.",
+    params: {}
+  }
+}
+
+module.exports = {
+  default_root,
+  roots,
+  tools,
+  limits
+}
